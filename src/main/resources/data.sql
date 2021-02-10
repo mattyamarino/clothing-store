@@ -2,4 +2,4 @@ Delete
 from home;
 
 INSERT INTO home (message)
-VALUES ('Qapla');
+VALUES ('Welcome to Clothing Store! 123');
