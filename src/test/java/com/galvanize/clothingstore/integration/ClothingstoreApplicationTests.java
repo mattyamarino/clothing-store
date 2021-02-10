@@ -21,7 +21,7 @@ class ClothingstoreApplicationTests {
     void home() throws Exception {
         mockMvc.perform(get("/home"))
             .andExpect(status().isOk())
-            .andExpect(content().string("Welcome to Clothing Store!"));
+            .andExpect(content().string("Qapla"));
     }
 
 }
