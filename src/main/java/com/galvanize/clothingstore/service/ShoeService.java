@@ -16,4 +16,8 @@ public class ShoeService {
         shoeToUpdate.setId(shoeId);
         shoeRepository.save(shoeToUpdate);
     }
+
+    public ShoeEntity addShoe(ShoeEntity shoe) {
+        return shoeRepository.save(shoe);
+    }
 }

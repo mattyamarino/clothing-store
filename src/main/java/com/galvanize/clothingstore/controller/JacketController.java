@@ -67,8 +67,6 @@ public class JacketController {
         return jacketService.getAllJackets();
     }
 
-
-
     @PostMapping("/shirts")
     @ResponseStatus(HttpStatus.CREATED)
     public ShirtEntity addShirt(@RequestBody ShirtEntity shirtEntity){
