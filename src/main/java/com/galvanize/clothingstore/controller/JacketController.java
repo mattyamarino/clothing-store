@@ -61,7 +61,7 @@ public class JacketController {
         return jacketService.addJacket(jacket);
     }
 
-    @GetMapping("all")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<JacketEntity>getJackets(){
         return jacketService.getAllJackets();
@@ -72,7 +72,7 @@ public class JacketController {
     public ShirtEntity addShirt(@RequestBody ShirtEntity shirtEntity){
         return shirtService.addShirt(shirtEntity);
     }
-    @PostMapping("shoe")
+    @PostMapping("/shoe")
     @ResponseStatus(HttpStatus.CREATED)
     public ShoeEntity addShoe(@RequestBody ShoeEntity shoe){
         return shoeService.addShoe(shoe);
@@ -95,6 +95,11 @@ public class JacketController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteShoe(@PathVariable Long productId) {
         shoeService.deleteShoe(productId);
+    }
+    @GetMapping("/shoes")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ShoeEntity>getShoes(){
+        return shoeService.getAllShoes();
     }
 
 }

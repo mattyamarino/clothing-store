@@ -261,10 +261,10 @@ class JacketControllerTest {
         jacketRepository.save(jacket1);
         jacketRepository.save(jacket2);
         jacketRepository.save(jacket3);
-        String actualList=mockMvc.perform(get("/api/products/all"))
+        String actualJacketsList=mockMvc.perform(get("/api/products/all"))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         String expected= objectMapper.writeValueAsString(jackets);
-        assertThat(expected).isEqualTo(actualList);
+        assertThat(expected).isEqualTo(actualJacketsList);
     }
 
     @Test
@@ -282,5 +282,28 @@ class JacketControllerTest {
                 .andExpect(jsonPath("$.color").value("Black"))
                 .andExpect(jsonPath("$.price").value("200"));
     }
+
+    @Test
+    public void getAllShoes() throws Exception {
+        ShoeEntity shoe1=new ShoeEntity(20, ShoeType.boot,"Leather","Nike","Black", 200L);
+        ShoeEntity shoe2=new ShoeEntity(15, ShoeType.sandal,"Leather","Reebok","Black", 100L);
+        ShoeEntity shoe3=new ShoeEntity(42, ShoeType.athletic,"Leather","Puma","White", 150L);
+
+        List<ShoeEntity> shoes=new ArrayList<>();
+        shoes.add(shoe1);
+        shoes.add(shoe2);
+        shoes.add(shoe3);
+
+        shoeRepository.save(shoe1);
+        shoeRepository.save(shoe2);
+        shoeRepository.save(shoe3);
+
+        String actualShoesList=mockMvc.perform(get("/api/products/shoes"))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        String expected= objectMapper.writeValueAsString(shoes);
+        assertThat(expected).isEqualTo(actualShoesList);
+    }
+
+
 
 }
