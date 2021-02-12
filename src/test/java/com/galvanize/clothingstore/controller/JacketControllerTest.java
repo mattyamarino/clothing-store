@@ -283,6 +283,35 @@ class JacketControllerTest {
                 .andExpect(jsonPath("$.price").value("200"));
     }
 
+    @Test
+    public void getProductsByColor() throws Exception {
+        JacketEntity jacket1= jacketRepository.save(new JacketEntity(Season.FALL,"L","Blue","Slim",true,35L));
+        jacketRepository.save(new JacketEntity(Season.WINTER,"M","Black","Skinny",false,50L));
+        JacketEntity jacket3= jacketRepository.save(new JacketEntity(Season.SPRING,"S","Blue","Slim",true,30L));
 
+        shoeRepository.save(new ShoeEntity(11, ShoeType.boot, "leather", "Nike",
+                "Periwinkle", 100L));
+        ShoeEntity shoeEntity2 = shoeRepository.save(new ShoeEntity(11, ShoeType.boot, "leather", "Nike",
+                "Blue", 100L));
+
+        shirtRepository.save((new ShirtEntity(ShirtType.dress, 5, 10, "L",
+                "Orange", true, 9900L)));
+        ShirtEntity shirtEntity2 = shirtRepository.save((new ShirtEntity(ShirtType.dress, 5, 10, "L",
+                "Blue", true, 9900L)));
+        shirtRepository.save((new ShirtEntity(ShirtType.dress, 5, 10, "L",
+                "Orange", true, 9900L)));
+
+        Products expected = Products.builder()
+                .jackets(List.of(jacket1, jacket3))
+                .shirts(List.of(shirtEntity2))
+                .shoes(List.of(shoeEntity2))
+                .build();
+
+        String expectedString = objectMapper.writeValueAsString(expected);
+
+        mockMvc.perform(get("/api/products?color=Blue"))
+                .andExpect(content().string(expectedString))
+                .andExpect(status().isOk());
+    }
 
 }
