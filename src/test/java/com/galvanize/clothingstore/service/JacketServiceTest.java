@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -41,4 +43,18 @@ class JacketServiceTest {
     }
 
 
+    @Test
+    public void searchWithAttributes(){
+        JacketEntity jacket1=new JacketEntity(Season.FALL,"L","Blue","Slim",Boolean.TRUE,35L);
+        JacketEntity jacket2=new JacketEntity(Season.FALL,"L","Blue","Slim",Boolean.TRUE,35L);
+        JacketEntity jacket3=new JacketEntity(Season.WINTER,"L","Blue","Slim",Boolean.TRUE,35L);
+
+        when(jacketRepository.findBySeasonAndSizeAndColorAndStyleAndAdultSize(Season.FALL,"L","Blue","Slim",true))
+                .thenReturn(List.of(jacket1,jacket2));
+
+        List<JacketEntity> jackets=jacketService.searchJackects(Season.FALL,"L","Blue","Slim",true);
+        verify(jacketRepository,times(1)).findBySeasonAndSizeAndColorAndStyleAndAdultSize(Season.FALL,"L","Blue","Slim",true);
+
+        assertEquals(2,jackets.size());
+    }
 }
