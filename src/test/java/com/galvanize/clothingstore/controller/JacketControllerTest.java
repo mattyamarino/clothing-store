@@ -3,9 +3,11 @@ package com.galvanize.clothingstore.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.galvanize.clothingstore.model.JacketEntity;
-import com.galvanize.clothingstore.model.Season;
+import com.galvanize.clothingstore.model.*;
 import com.galvanize.clothingstore.repository.JacketRepository;
+import com.galvanize.clothingstore.repository.ShirtRepository;
+import com.galvanize.clothingstore.repository.ShoeRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
@@ -21,6 +23,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.transaction.Transactional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -30,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureRestDocs(outputDir = "target/snippets")
+@Transactional
 class JacketControllerTest {
 
     @Autowired
@@ -39,8 +44,18 @@ class JacketControllerTest {
     JacketRepository jacketRepository;
 
     @Autowired
+    ShirtRepository shirtRepository;
+
+    @Autowired
+    ShoeRepository shoeRepository;
+
+    @Autowired
     MockMvc mockMvc;
 
+    @BeforeEach
+    public void setup() {
+        objectMapper = new ObjectMapper();
+    }
 
     @Test
     public void searchJacketWithAttributes() throws Exception {
@@ -73,14 +88,13 @@ class JacketControllerTest {
 
 
     @Test
-    public void updateJacket_updatesJacket() throws Exception {
+    public void updateJacket() throws Exception {
         JacketEntity jacketEntity = jacketRepository.save(new JacketEntity(Season.SPRING, "M",
                 "Blue", "Awesome", true, 10L));
 
         JacketEntity jacketToUpdate = new JacketEntity(Season.SUMMER, "L",
                 "Blue", "Awesome", true, 10L);
 
-        objectMapper = new ObjectMapper();
         String jacketString = objectMapper.writeValueAsString(jacketToUpdate);
 
         mockMvc.perform(put("/api/products/jacket/" + jacketEntity.getId())
@@ -92,9 +106,54 @@ class JacketControllerTest {
         JacketEntity result = jacketRepository.findById(jacketEntity.getId()).get();
         assertEquals(jacketToUpdate, result);
     }
+
+    @Test
+    public void updateShirt() throws Exception {
+        ShirtEntity shirtEntity = shirtRepository.save((new ShirtEntity(ShirtType.dress, 5, 10, "L",
+                "Orange", true, 9900L)));
+
+        Long shirtId = shirtEntity.getId();
+
+        ShirtEntity shirtToUpdate = new ShirtEntity(ShirtType.dress, 12, 10, "M",
+                "Orange", true, 9000L);
+
+        String shirtString = objectMapper.writeValueAsString(shirtToUpdate);
+
+        mockMvc.perform(put("/api/products/shirt/" + shirtId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(shirtString))
+                .andExpect(status().isOk());
+
+        shirtToUpdate.setId(shirtId);
+        ShirtEntity result = shirtRepository.findById(shirtId).get();
+        assertEquals(shirtToUpdate, result);
+    }
+
+    @Test
+    public void updateShoe() throws Exception {
+        ShoeEntity shoeEntity = shoeRepository.save(new ShoeEntity(11, ShoeType.boot, "leather", "Nike",
+                "periwinkle", 100L));
+
+        Long shoeId = shoeEntity.getId();
+
+        ShoeEntity shoeToUpdate = new ShoeEntity(10, ShoeType.boot, "leather", "Nike",
+                "white", 10000L);
+
+        String shoeString = objectMapper.writeValueAsString(shoeToUpdate);
+
+        mockMvc.perform(put("/api/products/shirt/" + shoeId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(shoeString))
+                .andExpect(status().isOk());
+
+        shoeToUpdate.setId(shoeId);
+        ShoeEntity result = shoeRepository.findById(shoeId).get();
+        assertEquals(shoeToUpdate, result);
+    }
+
+
     @Test
     public void addJacket_addsJacket() throws Exception {
-      objectMapper=new ObjectMapper();
         JacketEntity jacket=new JacketEntity(Season.FALL,"L","Blue","Slim",true,35L);
         String jacketString = objectMapper.writeValueAsString(jacket);
         mockMvc.perform(post("/api/products/jacket")

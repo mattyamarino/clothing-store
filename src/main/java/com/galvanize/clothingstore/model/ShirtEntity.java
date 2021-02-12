@@ -18,4 +18,17 @@ public class ShirtEntity {
     private String color;
     private Boolean longSleeve;
     private Long price;
+
+    public ShirtEntity() {
+    }
+
+    public ShirtEntity(ShirtType type, Integer sleeve, Integer neck, String size, String color, Boolean longSleeve, Long price) {
+        this.type = type;
+        this.sleeve = sleeve;
+        this.neck = neck;
+        this.size = size;
+        this.color = color;
+        this.longSleeve = longSleeve;
+        this.price = price;
+    }
 }
