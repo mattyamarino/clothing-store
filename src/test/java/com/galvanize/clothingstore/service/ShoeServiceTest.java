@@ -11,6 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -40,5 +43,29 @@ class ShoeServiceTest {
         verify(shoeRepository,times(1)).save(shoe);
         assertEquals(shoe,result);
     }
+
+    @Test
+    public void getAllShoes(){
+        ShoeEntity shoe1=new ShoeEntity(20, ShoeType.boot,"Leather","Nike","Black", 200L);
+        ShoeEntity shoe2=new ShoeEntity(15, ShoeType.sandal,"Leather","Reebok","Black", 100L);
+        ShoeEntity shoe3=new ShoeEntity(42, ShoeType.athletic,"Leather","Puma","White", 150L);
+
+        List<ShoeEntity> shoes=new ArrayList<>();
+        shoes.add(shoe1);
+        shoes.add(shoe2);
+        shoes.add(shoe3);
+
+        shoeRepository.save(shoe1);
+        shoeRepository.save(shoe2);
+        shoeRepository.save(shoe3);
+
+        when(shoeRepository.findAll()).thenReturn(shoes);
+        List<ShoeEntity> result=shoeService.getAllShoes();
+        verify(shoeRepository,times(1)).findAll();
+        assertEquals(shoes,result);
+
+
+    }
+
 
 }

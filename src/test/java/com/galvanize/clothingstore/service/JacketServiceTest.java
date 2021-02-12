@@ -46,7 +46,7 @@ class JacketServiceTest {
         assertEquals(jacket,result);
     }
     @Test
-    public void getAllJacket(){
+    public void getAllJackets(){
         JacketEntity jacket1=new JacketEntity(Season.FALL,"L","Blue","Slim",true,35L);
         JacketEntity jacket2=new JacketEntity(Season.WINTER,"M","Black","Skinny",false,50L);
         JacketEntity jacket3=new JacketEntity(Season.SPRING,"S","White","Slim",true,30L);
