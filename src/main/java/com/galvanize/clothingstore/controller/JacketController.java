@@ -37,6 +37,13 @@ public class JacketController {
     public JacketEntity addJacket(@RequestBody JacketEntity jacket){
         return jacketService.addJacket(jacket);
     }
+
+    @GetMapping("all")
+    @ResponseStatus(HttpStatus.OK)
+    public List<JacketEntity>getJackets(){
+        return jacketService.getAllJackets();
+    }
+
 }
 
 

@@ -13,19 +13,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -107,6 +108,25 @@ class JacketControllerTest {
                 .andExpect(jsonPath("$.style").value("Slim"))
                 .andExpect(jsonPath("$.adultSize").value("true"))
                 .andExpect(jsonPath("$.price").value("35"));
+    }
+
+    @Test
+    public void getAllJackets() throws Exception {
+        JacketEntity jacket1=new JacketEntity(Season.FALL,"L","Blue","Slim",true,35L);
+        JacketEntity jacket2=new JacketEntity(Season.WINTER,"M","Black","Skinny",false,50L);
+        JacketEntity jacket3=new JacketEntity(Season.SPRING,"S","White","Slim",true,30L);
+        List<JacketEntity> jackets=new ArrayList<>();
+        jackets.add(jacket1);
+        jackets.add(jacket2);
+        jackets.add(jacket3);
+
+        jacketRepository.save(jacket1);
+        jacketRepository.save(jacket2);
+        jacketRepository.save(jacket3);
+        String actualList=mockMvc.perform(get("/api/products/all"))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        String expected= objectMapper.writeValueAsString(jackets);
+        assertThat(expected).isEqualTo(actualList);
     }
 
 }

@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,6 +44,27 @@ class JacketServiceTest {
         JacketEntity result=jacketService.addJacket(jacket);
         verify(jacketRepository,times(1)).save(jacket);
         assertEquals(jacket,result);
+    }
+    @Test
+    public void getAllJacket(){
+        JacketEntity jacket1=new JacketEntity(Season.FALL,"L","Blue","Slim",true,35L);
+        JacketEntity jacket2=new JacketEntity(Season.WINTER,"M","Black","Skinny",false,50L);
+        JacketEntity jacket3=new JacketEntity(Season.SPRING,"S","White","Slim",true,30L);
+        List<JacketEntity> jackets=new ArrayList<>();
+        jackets.add(jacket1);
+        jackets.add(jacket2);
+        jackets.add(jacket3);
+
+        jacketRepository.save(jacket1);
+        jacketRepository.save(jacket2);
+        jacketRepository.save(jacket3);
+
+        when(jacketRepository.findAll()).thenReturn(jackets);
+        List<JacketEntity> result=jacketService.getAllJackets();
+        verify(jacketRepository,times(1)).findAll();
+        assertEquals(jackets,result);
+
+
     }
 
 
