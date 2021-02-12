@@ -50,4 +50,9 @@ public class ShirtService {
     public List<ShirtEntity> getAllShirts() {
         return shirtRepository.findAll();
     }
+
+    public void deleteShirt(long id) {
+        shirtRepository.deleteById(id);
+
+    }
 }

@@ -1,7 +1,5 @@
 package com.galvanize.clothingstore.controller;
 
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.clothingstore.model.JacketEntity;
 import com.galvanize.clothingstore.model.Season;
@@ -24,17 +22,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import javax.transaction.Transactional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -113,7 +108,44 @@ class JacketControllerTest {
         assertEquals(jacketToUpdate, result);
     }
 
+    @Test
+    public void deleteJacket() throws Exception {
+        JacketEntity jacketEntity = jacketRepository.save(new JacketEntity(Season.SPRING, "M",
+                "Blue", "Awesome", true, 10L));
 
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/jacket/" + jacketEntity.getId()))
+                .andExpect(status().isNoContent());
+
+        List<JacketEntity> result = jacketRepository.findAll();
+
+        assertEquals(0,result.size());
+    }
+
+    @Test
+    public void deleteShirt() throws Exception {
+        ShirtEntity shirtEntity = shirtRepository.save((new ShirtEntity(ShirtType.dress, 5, 10, "L",
+                "Orange", true, 9900L)));
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/shirt/" + shirtEntity.getId()))
+                .andExpect(status().isNoContent());
+
+        List<ShirtEntity> result = shirtRepository.findAll();
+
+        assertEquals(0,result.size());
+    }
+
+    @Test
+    public void deleteShoe() throws Exception {
+        ShoeEntity shoeEntity = shoeRepository.save(new ShoeEntity(11, ShoeType.boot, "leather", "Nike",
+                "periwinkle", 100L));
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/products/shoe/" + shoeEntity.getId()))
+                .andExpect(status().isNoContent());
+
+        List<ShoeEntity> result = shoeRepository.findAll();
+
+        assertEquals(0,result.size());
+    }
 
     @Test
     public void addShirt() throws Exception {
@@ -235,11 +267,12 @@ class JacketControllerTest {
         assertThat(expected).isEqualTo(actualList);
     }
 
+
     //api/products/shirts    GET     200 OK      A listing of all available products.
     @Test
     public void getAllShirts() throws Exception {
 
-        ShirtEntity shirt1 = new ShirtEntity(ShirtType.dress, 12, 10,null,
+        ShirtEntity shirt1 = new ShirtEntity(ShirtType.dress, 12, 10, null,
                 "Orange", true, 9000L);
 
         ShirtEntity shirt2 = new ShirtEntity(ShirtType.polo, null, null, "L",
@@ -265,7 +298,6 @@ class JacketControllerTest {
                 .andExpect(status().isCreated());
 
 
-
         mockMvc.perform(get("/api/products/shirts")).andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].type").value("dress"))
                 .andExpect(jsonPath("$[0].sleeve").value(12))
@@ -284,9 +316,22 @@ class JacketControllerTest {
                 .andExpect(jsonPath("$[2].longSleeve").value(true));
 
 
+    }
 
-
-
+    @Test
+    public void addShoe_addsShoe() throws Exception {
+        ShoeEntity shoe=new ShoeEntity(20,ShoeType.boot,"Leather","Nike","Black", 200L);
+        String shoeString = objectMapper.writeValueAsString(shoe);
+        mockMvc.perform(post("/api/products/shoe")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(shoeString))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.size").value("20"))
+                .andExpect(jsonPath("$.type").value("boot"))
+                .andExpect(jsonPath("$.material").value("Leather"))
+                .andExpect(jsonPath("$.brand").value("Nike"))
+                .andExpect(jsonPath("$.color").value("Black"))
+                .andExpect(jsonPath("$.price").value("200"));
 
     }
 

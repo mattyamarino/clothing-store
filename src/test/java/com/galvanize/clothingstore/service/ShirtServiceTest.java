@@ -70,6 +70,10 @@ class ShirtServiceTest {
         assertEquals(List.of(shirt1,shirt2,shirt3), actual);
     }
 
-
+    public void deleteShirt() {
+        shirtService.deleteShirt(1L);
+        verify(shirtRepository,times(1)).deleteById(1L);
+        verifyNoMoreInteractions(shirtRepository);
+    }
 
 }

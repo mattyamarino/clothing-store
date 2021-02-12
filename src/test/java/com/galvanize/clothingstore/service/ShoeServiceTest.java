@@ -1,6 +1,9 @@
 package com.galvanize.clothingstore.service;
 
+import com.galvanize.clothingstore.model.JacketEntity;
+import com.galvanize.clothingstore.model.Season;
 import com.galvanize.clothingstore.model.ShoeEntity;
+import com.galvanize.clothingstore.model.ShoeType;
 import com.galvanize.clothingstore.repository.ShoeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,4 +32,20 @@ class ShoeServiceTest {
         verify(shoeRepository, times(1)).save(shoeWithId);
         verifyNoMoreInteractions(shoeRepository);
     }
+
+    @Test
+    public void deleteShoe() {
+        shoeService.deleteShoe(1L);
+        verify(shoeRepository,times(1)).deleteById(1L);
+        verifyNoMoreInteractions(shoeRepository);
+    }
+    @Test
+    public void addShoe_callsSaveOnShoeRepo(){
+        ShoeEntity shoe=new ShoeEntity(20, ShoeType.boot,"Leather","Nike","Black", 200L);
+        when(shoeRepository.save(shoe)).thenReturn(shoe);
+        ShoeEntity result=shoeService.addShoe(shoe);
+        verify(shoeRepository,times(1)).save(shoe);
+        assertEquals(shoe,result);
+    }
+
 }
