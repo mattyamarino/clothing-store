@@ -15,7 +15,7 @@ public class JacketController {
     @PutMapping("jacket/{productId}")
     public void updateJacket(@PathVariable Long productId,
                               @RequestBody JacketEntity objectToUpdate) {
-        jacketService.updateProduct("jacket", productId, objectToUpdate);
+        jacketService.updateJacket(productId, objectToUpdate);
     }
 }
 

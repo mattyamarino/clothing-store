@@ -13,12 +13,9 @@ public class JacketService {
         this.jacketRepository = jacketRepository;
     }
 
-    public void updateProduct(String productType, long productId, Object objectToUpdate) {
-        if(productType.equals("jacket")) {
-            JacketEntity jacketToUpdate = (JacketEntity) objectToUpdate;
+    public void updateJacket(long productId, JacketEntity jacketToUpdate) {
             jacketToUpdate.setId(productId);
             jacketRepository.save(jacketToUpdate);
-        }
     }
 
     public JacketEntity addJacket(JacketEntity jacket) {
