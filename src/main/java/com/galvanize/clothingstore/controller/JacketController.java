@@ -72,6 +72,12 @@ public class JacketController {
     public ShirtEntity addShirt(@RequestBody ShirtEntity shirtEntity){
         return shirtService.addShirt(shirtEntity);
     }
+    @PostMapping("shoe")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ShoeEntity addShoe(@RequestBody ShoeEntity shoe){
+        return shoeService.addShoe(shoe);
+    }
+
 
     @DeleteMapping("jacket/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

@@ -267,4 +267,20 @@ class JacketControllerTest {
         assertThat(expected).isEqualTo(actualList);
     }
 
+    @Test
+    public void addShoe_addsShoe() throws Exception {
+        ShoeEntity shoe=new ShoeEntity(20,ShoeType.boot,"Leather","Nike","Black", 200L);
+        String shoeString = objectMapper.writeValueAsString(shoe);
+        mockMvc.perform(post("/api/products/shoe")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(shoeString))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.size").value("20"))
+                .andExpect(jsonPath("$.type").value("boot"))
+                .andExpect(jsonPath("$.material").value("Leather"))
+                .andExpect(jsonPath("$.brand").value("Nike"))
+                .andExpect(jsonPath("$.color").value("Black"))
+                .andExpect(jsonPath("$.price").value("200"));
+    }
+
 }
