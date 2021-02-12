@@ -20,4 +20,8 @@ public class ShoeService {
     public void deleteShoe(long id) {
         shoeRepository.deleteById(id);
     }
+
+    public ShoeEntity addShoe(ShoeEntity shoe) {
+        return shoeRepository.save(shoe);
+    }
 }
