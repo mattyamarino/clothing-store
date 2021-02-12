@@ -20,4 +20,8 @@ public class JacketService {
             jacketRepository.save(jacketToUpdate);
         }
     }
+
+    public JacketEntity addJacket(JacketEntity jacket) {
+        return jacketRepository.save(jacket);
+    }
 }

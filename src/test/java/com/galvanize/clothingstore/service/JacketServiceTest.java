@@ -1,6 +1,7 @@
 package com.galvanize.clothingstore.service;
 
 import com.galvanize.clothingstore.model.JacketEntity;
+import com.galvanize.clothingstore.model.Season;
 import com.galvanize.clothingstore.repository.JacketRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,5 +29,14 @@ class JacketServiceTest {
         jacketService.updateProduct("jacket", 1L, jacketEntity);
         verify(jacketRepository, times(1)).save(jacketWithId);
         verifyNoMoreInteractions(jacketRepository);
+    }
+
+    @Test
+    public void addProduct_callsSaveOnJacketRepo(){
+        JacketEntity jacket=new JacketEntity(Season.FALL,"L","Blue","Slim",Boolean.TRUE,35L);
+        when(jacketRepository.save(jacket)).thenReturn(jacket);
+        JacketEntity result=jacketService.addJacket(jacket);
+        verify(jacketRepository,times(1)).save(jacket);
+        assertEquals(jacket,result);
     }
 }
