@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.NotAcceptableStatusException;
 
+import java.util.List;
+
 @Service
 public class ShirtService {
 
@@ -45,7 +47,12 @@ public class ShirtService {
         return shirtRepository.save(shirtEntity);
     }
 
+    public List<ShirtEntity> getAllShirts() {
+        return shirtRepository.findAll();
+    }
+
     public void deleteShirt(long id) {
         shirtRepository.deleteById(id);
+
     }
 }
