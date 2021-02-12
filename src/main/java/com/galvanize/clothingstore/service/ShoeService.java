@@ -12,7 +12,7 @@ public class ShoeService {
         this.shoeRepository = shoeRepository;
     }
 
-    public void updateShoe(long shoeId, ShoeEntity shoeToUpdate) {
+    public void updateShoe(Long shoeId, ShoeEntity shoeToUpdate) {
         shoeToUpdate.setId(shoeId);
         shoeRepository.save(shoeToUpdate);
     }

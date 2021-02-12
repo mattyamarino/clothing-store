@@ -38,7 +38,7 @@ class JacketServiceTest {
 
     @Test
     public void addProduct_callsSaveOnJacketRepo(){
-        JacketEntity jacket=new JacketEntity(Season.FALL,"L","Blue","Slim",Boolean.TRUE,35L);
+        JacketEntity jacket=new JacketEntity(Season.FALL,"L","Blue","Slim",true,35L);
         when(jacketRepository.save(jacket)).thenReturn(jacket);
         JacketEntity result=jacketService.addJacket(jacket);
         verify(jacketRepository,times(1)).save(jacket);
