@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.galvanize.clothingstore.model.JacketEntity;
 import com.galvanize.clothingstore.model.Season;
+import com.galvanize.clothingstore.model.ShirtEntity;
+import com.galvanize.clothingstore.model.ShirtType;
 import com.galvanize.clothingstore.repository.JacketRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -90,4 +93,47 @@ class JacketControllerTest {
         JacketEntity result = jacketRepository.findById(jacketEntity.getId()).get();
         assertEquals(jacketToUpdate, result);
     }
+
+
+
+    @Test
+    public void addShirt() throws Exception {
+
+        ShirtEntity shirt=new ShirtEntity();
+        shirt.setType(ShirtType.dress);
+        shirt.setSleeve(20);
+        shirt.setNeck(25);
+        shirt.setColor("blue");
+        shirt.setLongSleeve(true);
+
+        mockMvc.perform(post("/api/products/shirts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(shirt)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.type").value("dress"))
+                .andExpect(jsonPath("$.sleeve").value(20))
+                .andExpect(jsonPath("$.neck").value(25))
+                .andExpect(jsonPath("$.color").value("blue"))
+                .andExpect(jsonPath("$.longSleeve").value(true));
+
+    }
+
+    @Test
+    public void addShirtDressWithSizeSleeveAndNeckThrowsError() throws Exception {
+
+        ShirtEntity shirt=new ShirtEntity();
+        shirt.setType(ShirtType.dress);
+        shirt.setSleeve(20);
+        shirt.setNeck(25);
+        shirt.setSize("medium");
+        shirt.setColor("blue");
+        shirt.setLongSleeve(true);
+
+        mockMvc.perform(post("/api/products/shirts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(shirt)))
+                .andExpect(status().isNotAcceptable());
+    }
+
+
 }

@@ -1,6 +1,7 @@
 package com.galvanize.clothingstore.service;
 
 import com.galvanize.clothingstore.model.ShirtEntity;
+import com.galvanize.clothingstore.model.ShirtType;
 import com.galvanize.clothingstore.repository.ShirtRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +30,23 @@ class ShirtServiceTest {
         shirtService.updateShirt(1L, shirtEntity);
         verify(shirtRepository, times(1)).save(shirtWithId);
         verifyNoMoreInteractions(shirtRepository);
+    }
+
+    @Test
+    public void addShirt(){
+        ShirtEntity shirt=new ShirtEntity();
+        shirt.setType(ShirtType.dress);
+        shirt.setSleeve(20);
+        shirt.setNeck(25);
+        shirt.setColor("blue");
+        shirt.setLongSleeve(true);
+
+        when(shirtRepository.save(shirt)).thenReturn(shirt);
+        ShirtEntity actual=shirtService.addShirt(shirt);
+        verify(shirtRepository,times(1)).save(shirt);
+
+        assertEquals(shirt,actual);
+
     }
 
 }
