@@ -44,4 +44,8 @@ public class ShirtService {
         }
         return shirtRepository.save(shirtEntity);
     }
+
+    public void deleteShirt(long id) {
+        shirtRepository.deleteById(id);
+    }
 }

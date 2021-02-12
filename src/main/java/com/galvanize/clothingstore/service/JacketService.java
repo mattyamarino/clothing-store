@@ -50,4 +50,8 @@ public class JacketService {
     public List<JacketEntity> getAllJackets() {
         return jacketRepository.findAll();
     }
+
+    public void deleteJacket(long id) {
+        jacketRepository.deleteById(id);
+    }
 }
