@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -51,4 +53,21 @@ class JacketControllerTest {
         JacketEntity result = jacketRepository.findById(jacketEntity.getId()).get();
         assertEquals(jacketToUpdate, result);
     }
+    @Test
+    public void addJacket_addsJacket() throws Exception {
+      objectMapper=new ObjectMapper();
+        JacketEntity jacket=new JacketEntity(Season.FALL,"L","Blue","Slim",true,35L);
+        String jacketString = objectMapper.writeValueAsString(jacket);
+        mockMvc.perform(post("/api/products/jacket")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jacketString))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.season").value("FALL"))
+                .andExpect(jsonPath("$.size").value("L"))
+                .andExpect(jsonPath("$.color").value("Blue"))
+                .andExpect(jsonPath("$.style").value("Slim"))
+                .andExpect(jsonPath("$.adultSize").value("true"))
+                .andExpect(jsonPath("$.price").value("35"));
+    }
+
 }
