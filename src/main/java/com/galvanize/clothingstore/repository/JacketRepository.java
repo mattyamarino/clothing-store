@@ -20,4 +20,6 @@ public interface JacketRepository extends JpaRepository<JacketEntity, Long> {
     List<JacketEntity> findBySeasonAndSizeAndColor(Season season, String size, String color);
 
     List<JacketEntity> findBySeasonAndSize(Season season, String size);
+
+    List<JacketEntity> findByColor(String color);
 }
