@@ -75,6 +75,11 @@ public class JacketController {
         return shirtService.addShirt(shirtEntity);
     }
 
+    @GetMapping("/shirts")
+    public List<ShirtEntity> getAllShirts() {
+        return shirtService.getAllShirts();
+    }
+
 
 }
 

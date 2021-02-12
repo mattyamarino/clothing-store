@@ -235,4 +235,59 @@ class JacketControllerTest {
         assertThat(expected).isEqualTo(actualList);
     }
 
+    //api/products/shirts    GET     200 OK      A listing of all available products.
+    @Test
+    public void getAllShirts() throws Exception {
+
+        ShirtEntity shirt1 = new ShirtEntity(ShirtType.dress, 12, 10,null,
+                "Orange", true, 9000L);
+
+        ShirtEntity shirt2 = new ShirtEntity(ShirtType.polo, null, null, "L",
+                "Blue", true, 9000L);
+
+        ShirtEntity shirt3 = new ShirtEntity(ShirtType.henley, null, null, "S",
+                "Red", true, 9000L);
+
+
+        mockMvc.perform(post("/api/products/shirts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(shirt1)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/products/shirts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(shirt2)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/products/shirts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(shirt3)))
+                .andExpect(status().isCreated());
+
+
+
+        mockMvc.perform(get("/api/products/shirts")).andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].type").value("dress"))
+                .andExpect(jsonPath("$[0].sleeve").value(12))
+                .andExpect(jsonPath("$[0].neck").value(10))
+                .andExpect(jsonPath("$[0].color").value("Orange"))
+                .andExpect(jsonPath("$[0].longSleeve").value(true))
+
+                .andExpect(jsonPath("$[1].type").value("polo"))
+                .andExpect(jsonPath("$[1].size").value("L"))
+                .andExpect(jsonPath("$[1].color").value("Blue"))
+                .andExpect(jsonPath("$[1].longSleeve").value(true))
+
+                .andExpect(jsonPath("$[2].type").value("henley"))
+                .andExpect(jsonPath("$[2].size").value("S"))
+                .andExpect(jsonPath("$[2].color").value("Red"))
+                .andExpect(jsonPath("$[2].longSleeve").value(true));
+
+
+
+
+
+
+    }
+
 }

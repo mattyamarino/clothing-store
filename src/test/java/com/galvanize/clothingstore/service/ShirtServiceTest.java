@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -48,5 +50,26 @@ class ShirtServiceTest {
         assertEquals(shirt,actual);
 
     }
+
+    @Test
+    public void getAllShirts() {
+        ShirtEntity shirt1 = new ShirtEntity(ShirtType.dress, 12, 10,null,
+                "Orange", true, 9000L);
+
+        ShirtEntity shirt2 = new ShirtEntity(ShirtType.polo, null, null, "L",
+                "Blue", true, 9000L);
+
+        ShirtEntity shirt3 = new ShirtEntity(ShirtType.henley, null, null, "S",
+                "Red", true, 9000L);
+
+       // when(shirtRepository.saveAll(List.of(shirt1,shirt2,shirt3))).thenReturn(List.of(shirt1,shirt2,shirt3));
+        when(shirtRepository.findAll()).thenReturn(List.of(shirt1,shirt2,shirt3));
+        List<ShirtEntity> actual = shirtService.getAllShirts();
+        verify(shirtRepository,times(1) ).findAll();
+        assertEquals(3, actual.size());
+        assertEquals(List.of(shirt1,shirt2,shirt3), actual);
+    }
+
+
 
 }
