@@ -75,6 +75,23 @@ public class JacketController {
         return shirtService.addShirt(shirtEntity);
     }
 
+    @DeleteMapping("jacket/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteJacket(@PathVariable Long productId) {
+        jacketService.deleteJacket(productId);
+    }
+
+    @DeleteMapping("shirt/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteShirt(@PathVariable Long productId) {
+        shirtService.deleteShirt(productId);
+    }
+
+    @DeleteMapping("shoe/{productId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteShoe(@PathVariable Long productId) {
+        shoeService.deleteShoe(productId);
+    }
 
 }
 

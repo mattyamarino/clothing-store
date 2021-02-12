@@ -29,4 +29,11 @@ class ShoeServiceTest {
         verify(shoeRepository, times(1)).save(shoeWithId);
         verifyNoMoreInteractions(shoeRepository);
     }
+
+    @Test
+    public void deleteShoe() {
+        shoeService.deleteShoe(1L);
+        verify(shoeRepository,times(1)).deleteById(1L);
+        verifyNoMoreInteractions(shoeRepository);
+    }
 }

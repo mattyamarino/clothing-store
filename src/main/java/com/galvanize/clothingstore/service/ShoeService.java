@@ -16,4 +16,8 @@ public class ShoeService {
         shoeToUpdate.setId(shoeId);
         shoeRepository.save(shoeToUpdate);
     }
+
+    public void deleteShoe(long id) {
+        shoeRepository.deleteById(id);
+    }
 }

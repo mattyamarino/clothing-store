@@ -38,6 +38,15 @@ class JacketServiceTest {
     }
 
     @Test
+    public void deleteJacket() {
+        jacketService.deleteJacket(1L);
+        verify(jacketRepository,times(1)).deleteById(1L);
+        verifyNoMoreInteractions(jacketRepository);
+    }
+
+
+
+    @Test
     public void addProduct_callsSaveOnJacketRepo(){
         JacketEntity jacket=new JacketEntity(Season.FALL,"L","Blue","Slim",true,35L);
         when(jacketRepository.save(jacket)).thenReturn(jacket);
@@ -82,4 +91,6 @@ class JacketServiceTest {
 
         assertEquals(2,jackets.size());
     }
+
+
 }
