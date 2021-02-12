@@ -21,23 +21,31 @@ public class JacketService {
     }
 
     public List<JacketEntity> searchJackects(Season season, String size, String color, String style, Boolean adultSize) {
-       if(season!=null && !size.isEmpty() && !color.isEmpty() && !style.isEmpty() && adultSize!=null){
-            return  jacketRepository.findBySeasonAndSizeAndColorAndStyleAndAdultSize(season,size,color,style,adultSize);
-       }
-       else if(season!=null && !size.isEmpty() && !color.isEmpty() && !style.isEmpty() ){
-           return jacketRepository.findBySeasonAndSizeAndColorAndStyle(season,size,color,style);
-       }
-
-       else if(season!=null && !size.isEmpty() && !color.isEmpty()){
-           return jacketRepository.findBySeasonAndSizeAndColor(season,size,color);
-       }
-
-       else if(season!=null && !size.isEmpty()){
-           return jacketRepository.findBySeasonAndSize(season,size);
-       }
+        if (season != null && !size.isEmpty() && !color.isEmpty() && !style.isEmpty() && adultSize != null) {
+            return jacketRepository.findBySeasonAndSizeAndColorAndStyleAndAdultSize(season, size, color, style, adultSize);
+        } else if (season != null && !size.isEmpty() && !color.isEmpty() && !style.isEmpty()) {
+            return jacketRepository.findBySeasonAndSizeAndColorAndStyle(season, size, color, style);
+        } else if (season != null && !size.isEmpty() && !color.isEmpty()) {
+            return jacketRepository.findBySeasonAndSizeAndColor(season, size, color);
+        } else if (season != null && !size.isEmpty()) {
+            return jacketRepository.findBySeasonAndSize(season, size);
+        }
 
 
-       return jacketRepository.findBySeason(season);
+        return jacketRepository.findBySeason(season);
+    }
 
+
+
+    public void updateProduct(String productType, long productId, Object objectToUpdate) {
+        if(productType.equals("jacket")) {
+            JacketEntity jacketToUpdate = (JacketEntity) objectToUpdate;
+            jacketToUpdate.setId(productId);
+            jacketRepository.save(jacketToUpdate);
+        }
+    }
+
+    public JacketEntity addJacket(JacketEntity jacket) {
+        return jacketRepository.save(jacket);
     }
 }
