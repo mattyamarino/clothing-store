@@ -141,7 +141,7 @@ class JacketControllerTest {
 
         String shoeString = objectMapper.writeValueAsString(shoeToUpdate);
 
-        mockMvc.perform(put("/api/products/shirt/" + shoeId)
+        mockMvc.perform(put("/api/products/shoe/" + shoeId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(shoeString))
                 .andExpect(status().isOk());
