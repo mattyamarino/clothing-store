@@ -4,6 +4,8 @@ import com.galvanize.clothingstore.model.ShoeEntity;
 import com.galvanize.clothingstore.repository.ShoeRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ShoeService {
     private ShoeRepository shoeRepository;
@@ -25,4 +27,7 @@ public class ShoeService {
         return shoeRepository.save(shoe);
     }
 
+    public List<ShoeEntity> getAllShoes() {
+        return shoeRepository.findAll();
+    }
 }

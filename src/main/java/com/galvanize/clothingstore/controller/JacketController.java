@@ -82,6 +82,11 @@ public class JacketController {
         jacketService.deleteJacket(productId);
     }
 
+    @GetMapping("/shirts")
+    public List<ShirtEntity> getAllShirts() {
+        return shirtService.getAllShirts();
+    }
+
     @DeleteMapping("/shirt/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteShirt(@PathVariable Long productId) {
@@ -93,6 +98,12 @@ public class JacketController {
     public void deleteShoe(@PathVariable Long productId) {
         shoeService.deleteShoe(productId);
     }
+    @GetMapping("/shoes")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ShoeEntity>getShoes(){
+        return shoeService.getAllShoes();
+    }
+
 
     @GetMapping
     public Products getProductsByColor(@RequestParam String color) {

@@ -261,10 +261,61 @@ class JacketControllerTest {
         jacketRepository.save(jacket1);
         jacketRepository.save(jacket2);
         jacketRepository.save(jacket3);
-        String actualList=mockMvc.perform(get("/api/products/all"))
+        String actualJacketsList=mockMvc.perform(get("/api/products/all"))
                 .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
         String expected= objectMapper.writeValueAsString(jackets);
-        assertThat(expected).isEqualTo(actualList);
+        assertThat(expected).isEqualTo(actualJacketsList);
+    }
+
+
+    //api/products/shirts    GET     200 OK      A listing of all available products.
+    @Test
+    public void getAllShirts() throws Exception {
+
+        ShirtEntity shirt1 = new ShirtEntity(ShirtType.dress, 12, 10, null,
+                "Orange", true, 9000L);
+
+        ShirtEntity shirt2 = new ShirtEntity(ShirtType.polo, null, null, "L",
+                "Blue", true, 9000L);
+
+        ShirtEntity shirt3 = new ShirtEntity(ShirtType.henley, null, null, "S",
+                "Red", true, 9000L);
+
+
+        mockMvc.perform(post("/api/products/shirts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(shirt1)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/products/shirts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(shirt2)))
+                .andExpect(status().isCreated());
+
+        mockMvc.perform(post("/api/products/shirts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(shirt3)))
+                .andExpect(status().isCreated());
+
+
+        mockMvc.perform(get("/api/products/shirts")).andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].type").value("dress"))
+                .andExpect(jsonPath("$[0].sleeve").value(12))
+                .andExpect(jsonPath("$[0].neck").value(10))
+                .andExpect(jsonPath("$[0].color").value("Orange"))
+                .andExpect(jsonPath("$[0].longSleeve").value(true))
+
+                .andExpect(jsonPath("$[1].type").value("polo"))
+                .andExpect(jsonPath("$[1].size").value("L"))
+                .andExpect(jsonPath("$[1].color").value("Blue"))
+                .andExpect(jsonPath("$[1].longSleeve").value(true))
+
+                .andExpect(jsonPath("$[2].type").value("henley"))
+                .andExpect(jsonPath("$[2].size").value("S"))
+                .andExpect(jsonPath("$[2].color").value("Red"))
+                .andExpect(jsonPath("$[2].longSleeve").value(true));
+
+
     }
 
     @Test
@@ -281,7 +332,31 @@ class JacketControllerTest {
                 .andExpect(jsonPath("$.brand").value("Nike"))
                 .andExpect(jsonPath("$.color").value("Black"))
                 .andExpect(jsonPath("$.price").value("200"));
+
     }
+
+    @Test
+    public void getAllShoes() throws Exception {
+        ShoeEntity shoe1=new ShoeEntity(20, ShoeType.boot,"Leather","Nike","Black", 200L);
+        ShoeEntity shoe2=new ShoeEntity(15, ShoeType.sandal,"Leather","Reebok","Black", 100L);
+        ShoeEntity shoe3=new ShoeEntity(42, ShoeType.athletic,"Leather","Puma","White", 150L);
+
+        List<ShoeEntity> shoes=new ArrayList<>();
+        shoes.add(shoe1);
+        shoes.add(shoe2);
+        shoes.add(shoe3);
+
+        shoeRepository.save(shoe1);
+        shoeRepository.save(shoe2);
+        shoeRepository.save(shoe3);
+
+        String actualShoesList=mockMvc.perform(get("/api/products/shoes"))
+                .andExpect(status().isOk()).andReturn().getResponse().getContentAsString();
+        String expected= objectMapper.writeValueAsString(shoes);
+        assertThat(expected).isEqualTo(actualShoesList);
+    }
+
+
 
     @Test
     public void getProductsByColor() throws Exception {
