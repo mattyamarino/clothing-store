@@ -20,4 +20,5 @@ public class ShoeService {
     public ShoeEntity addShoe(ShoeEntity shoe) {
         return shoeRepository.save(shoe);
     }
+
 }
